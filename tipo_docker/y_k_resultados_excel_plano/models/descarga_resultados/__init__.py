@@ -1,0 +1,1 @@
+from tipo_docker.y_g_resultados_resaltantes_comparativo_div.models.funtions.pdf.boletin_coe import *

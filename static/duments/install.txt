@@ -1,0 +1,17 @@
+pip install falsk
+
+pip install fpdf
+pip install psycopg2
+pip install pymysql
+pip install flask_mysqldb
+pip install flask_login
+pip install flask_wtf
+pip install wsgiserver
+pip install werkzeug
+pip install gevent
+pip install iconv
+pip install gunicorn
+pip install waitress
+pip install contextily
+
+pip install flask mysql-connector, fpdf, psycopg2, pymysql, flask_mysqldb, flask_login, flask_wtf, wsgiserver, werkzeug, gevent, gunicorn, iconv, waitress, contextily

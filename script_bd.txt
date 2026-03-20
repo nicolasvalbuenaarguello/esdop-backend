@@ -1,0 +1,1897 @@
+CREATE TABLE public.resultados		
+	(		
+	HR	text	,
+	RES_BOLETIN	text	,
+	HOP_HECHO	text	,
+	HOP_HORA_HECHO	text	,
+	HOP_FECHA_HECHO	date	,
+	HOP_MES_HECHO	text	,
+	HOP_DEPTO	text	,
+	HOP_MPIO	text	,
+	HOP_LUGAR	text	,
+	HOP_SITIO	text	,
+	HOP_DIV	text	,
+	HOP_BR	text	,
+	HOP_UNIDAD	text	,
+	HOP_ENEMIGO	text	,
+	HOP_CUADRILLA	text	,
+	HOP_OPERACION	text	,
+	HOP_ORDOP	text	,
+	RES_ACCION	text	,
+	HOP_ACCION_ENEMIGA	text	,
+	RES_TIPO	text	,
+	RES_SUBTIPO	text	,
+	RES_CLASE	text	,
+	RES_NUMDOC	text	,
+	RES_GRADO	text	,
+	RES_NOMBRE	text	,
+	RES_EDAD	text	,
+	RES_SEXO	text	,
+	RES_ESPECIALIDAD	text	,
+	RES_NIVEL_JER	text	,
+	RES_ARMA	text	,
+	HOP_COMANDANTE	text	,
+	HOP_RESUMEN_HECHOS	text	,
+	HOP_LAT	text	,
+	HOP_LON	text	,
+	RES_JUDIC	text	,
+	RES_FECHA_JUDIC	text	,
+	CANTIDAD	double precision	,
+	UNIDAD	text	,
+	RES_SPOA	text	,
+	RES_SIGAHD	text	,
+	HOP_APOYO_BLICA	text	,
+	HOP_APOYO_CONAT	text	,
+	HOP_ACCION_DAVAA	text	,
+	FENOMENO_DE_CRIMINALIDAD	text	,
+	AGR_DIV	text	,
+	HOP_TIPO_OP	text	,
+	HOP_HECHO_POS	text	
+	);		
+
+
+
+create view view_resultados as select *  ,
+	 CASE WHEN res_accion like '%CAPTURADO%' THEN 'CAPTURAS'
+	 	  WHEN res_accion like 'SOMETIMIENTO A LA JUSTICIA' THEN 'SOMETIMIENTO A LA JUSTICIA'
+		  WHEN res_accion like '%ENTREGA%' THEN 'ENTREGAS'
+		  WHEN res_accion like '%PRESENTACIONES VOLUNTARIA%' THEN 'PRESENTACIONES VOLUNTARIA'
+		  WHEN res_accion like '%MUERTOS EN DESARROLLO DE OPERACIONES MILITARES%' THEN 'MDOM'
+		  WHEN res_accion like '%ASESINADO(A)%' THEN 'ASESINADO(A)'
+		  WHEN res_accion like '%HERIDO(A)%' THEN 'HERIDO(A)'
+		  WHEN res_accion like '%LIBERADO%' THEN 'LIBERADOS'
+		  WHEN res_accion like '%RESCATADO(A)%' THEN 'RESCATADOS'
+            ELSE '---'
+       END as "RESULTADOS",
+	   	CASE WHEN res_accion like '%RME%' THEN 'MENORES RECUPERADOS'
+            ELSE '---'
+       END
+	   as "MENORES"
+from resultados;
+
+
+CREATE TABLE public.hechos		
+	(		
+	HR	text	,
+	HECHO	text	,
+	BOLETIN	text	,
+	FECHA_HECHO	date	,
+	ACCION_ENEMIGA	text	,
+	DIVISION	text	,
+	BRIGADA	text	,
+	UNIDAD	text	,
+	DPTO	text	,
+	MPIO	text	,
+	SITIO	text	,
+	LUGAR	text	,
+	ENEMIGO	text	,
+	RESUMEN_HECHOS	text	,
+	LATITUD	text	,
+	LONGITUD	text	,
+	ESTRATEGIA_AFECTA	text	,
+	HOP_ACCION_DAVAA	text	,
+	HOP_HECHO_POS	text	,
+	AGR_DIV	text	,
+	HOP_INICIATIVA	text	,
+	CANTIDAD	double precision	,
+	HOP_OPERACION	text	,
+	HOP_APOYO_BLICA	text	,
+	HOP_APOYO_CONAT	text	,
+	HOP_ORDOP	text	,
+	HOP_COMANDANTE	text	,
+	HOP_COMPANIA	text	,
+	HOP_PELOTON	text	,
+	HOP_CLASE_SOLDADO	text	,
+	HOP_PROC_INFO	text	,
+	HOP_EXITO	text	,
+	HOP_HORA_HECHO	text	
+	);		
+
+create view view_hechos as select *,
+
+	 CASE WHEN HOP_HECHO_POS like 'SI' THEN  1
+	 	  WHEN HOP_HECHO_POS like 'NO' THEN -1
+		  ELSE -1
+		  
+           
+       END as "VALOR HECHO", 
+	   
+	   	 CASE WHEN HOP_HECHO_POS like 'SI' THEN  'POSITIVO'
+	 	  WHEN HOP_HECHO_POS like 'NO' THEN 'NEGATIVO'
+		  ELSE 'SIN RESULTADOS'
+		  
+           
+       END as "TIPO HECHO"
+
+
+from hechos;
+
+CREATE TABLE public.erradicacion		
+	(		
+	UNIDAD	date	,
+	AGR_DIV	text	,
+	HOP_DIV	text	,
+	HOP_BR	text	,
+	HOP_UNIDAD	text	,
+	FASE	text	,
+	MPIO_ERRADICACION	text	,
+	SITIO_ERRADICACION	text	,
+	DEPTO_ERRADICACION	text	,
+	METODO	text	,
+	ENTIDAD	text	,
+	CANTIDAD	double precision	
+	);	
+
+
+create view view_erradicacion as select *
+from erradicacion;
+
+CREATE TABLE public."veredas_asignadas"
+	(
+		id integer NOT NULL,
+		ver_asignadas_muy_alta integer ,
+		ver_cubiertas_muy_alta integer,
+		ver_asignadas_alta integer ,
+		ver_cubiertas_alta integer ,
+		ver_asignadas_moderada integer ,
+		ver_cubiertas_moderada integer ,
+		ver_asignadas_baja integer,
+		ver_cubiertas_baja integer,
+
+
+		PRIMARY KEY (id)
+	);
+
+ALTER TABLE IF EXISTS public."veredas_asignadas"
+    OWNER to postgres;	
+
+CREATE TABLE public."pelotones_veredas_asignadas"
+	(
+		id integer NOT NULL,
+		division text,
+		pelotones integer,
+		ver_cubiertas integer,
+		ver_faltantes integer,
+
+		PRIMARY KEY (id)
+	);
+
+ALTER TABLE IF EXISTS public."pelotones_veredas_asignadas"
+    OWNER to postgres;	
+
+
+--- vistas new aplicativo ---
+
+create materialized view view_unidades_materializados
+as
+ 	select DISTINCT  agr_div, division, brigada, unidad, dpto, mpio
+	from hechos
+	where fecha_hecho >= '2004-01-01' 
+	
+
+---- vista ----
+create materialized view view_divisiones_materializados
+as
+ 	select DISTINCT  agr_div 
+	from hechos 
+	ORDER BY agr_div ASC;
+
+
+create materialized view view_divisiones_ft_materializados
+as
+ 	select DISTINCT  division, agr_div, fecha_hecho
+	from hechos
+	where fecha_hecho >= '2015-01-01'
+	ORDER BY division ASC;
+
+create materialized view view_brigadas_materializados
+as
+ 	select DISTINCT brigada, agr_div, fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2015-01-01'
+	ORDER BY brigada ASC;
+
+
+create materialized view view_unidad_materializados
+as
+ 	select DISTINCT  unidad, agr_div, fecha_hecho
+	from hechos
+	where fecha_hecho >= '2015-01-01'  
+	ORDER BY unidad ASC;
+
+create materialized view view_dpto_materializados
+as
+ 	select DISTINCT  dpto, agr_div, fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2015-01-01' 
+	ORDER BY dpto ASC;
+
+
+create materialized view view_mpios_materializados
+as
+ 	select DISTINCT  mpio, agr_div, fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2015-01-01' 
+	ORDER BY mpio ASC;
+
+create materialized view view_hop_operacion_materializados
+as
+ 	select DISTINCT  hop_operacion,  fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2020-05-01' 
+	ORDER BY hop_operacion ASC;
+
+create materialized view view_enemigo_materializados
+as
+ 	select DISTINCT 
+	
+	CASE WHEN enemigo like '%GAO-r disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN enemigo like '%GAO - Residual Disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN enemigo like '%GAO-RESIDUAL%' THEN 'GAO - Residual Disidencias FARC'
+		else enemigo
+		end as enemigo,
+		
+	from hechos 
+	ORDER BY enemigo ASC;
+
+create materialized view view_erradicacion_materializados
+as
+ 	select * from erradicacion;
+
+tabla hechos 
+"hr"	"text"		"YES"
+"hecho"	"text"		"YES"
+"boletin"	"text"		"YES"
+"fecha_hecho"	"date"		"YES"
+"accion_enemiga"	"text"		"YES"
+"division"	"text"		"YES"
+"brigada"	"text"		"YES"
+"unidad"	"text"		"YES"
+"dpto"	"text"		"YES"
+"mpio"	"text"		"YES"
+"sitio"	"text"		"YES"
+"lugar"	"text"		"YES"
+"enemigo"	"text"		"YES"
+"resumen_hechos"	"text"		"YES"
+"latitud"	"text"		"YES"
+"longitud"	"text"		"YES"
+"estrategia_afecta"	"text"		"YES"
+"hop_accion_davaa"	"text"		"YES"
+"hop_hecho_pos"	"text"		"YES"
+"agr_div"	"text"		"YES"
+"hop_iniciativa"	"text"		"YES"
+"cantidad"	"double precision"	"53"	"YES"
+"hop_operacion"	"text"		"YES"
+"hop_apoyo_blica"	"text"		"YES"
+"hop_apoyo_conat"	"text"		"YES"
+"hop_ordop"	"text"		"YES"
+"hop_comandante"	"text"		"YES"
+"hop_compania"	"text"		"YES"
+"hop_peloton"	"text"		"YES"
+"hop_clase_soldado"	"text"		"YES"
+"hop_proc_info"	"text"		"YES"
+"hop_exito"	"text"		"YES"
+"hop_hora_hecho"	"text"		"YES"
+"coordinada"	"text"		"YES"
+"conjunta"	"text"		"YES"
+"tipo_operacion"	"text"		"YES"
+"acam_enemigo"	"text"		"YES"
+"acam_estructura"	"text"		"YES"
+"ene_estructura"	"text"		"YES"
+"HOP_ACCION_CCOES"	"text"		"YES"
+"HOP_APOYO_AEREO"	"text"		"YES"
+"HOP_APOYO_ART"	"text"		"YES"
+"HOP_APOYO_BAFUR"	"text"		"YES"
+"HOP_APOYO_BRCMI"	"text"		"YES"
+"HOP_APOYO_BRCOM"	"text"		"YES"
+"HOP_APOYO_DIVFE"	"text"		"YES"
+"HOP_APOYO_EXDE"	"text"		"YES"
+"HOP_APOYO_FUDAT"	"text"		"YES"
+"HOP_APOYO_GROIC"	"text"		"YES"
+
+tabla resultados 
+"hr"	"text"		"YES"
+"res_boletin"	"text"		"YES"
+"hop_hecho"	"text"		"YES"
+"hop_hora_hecho"	"text"		"YES"
+"hop_fecha_hecho"	"date"		"YES"
+"hop_mes_hecho"	"text"		"YES"
+"hop_depto"	"text"		"YES"
+"hop_mpio"	"text"		"YES"
+"hop_lugar"	"text"		"YES"
+"hop_sitio"	"text"		"YES"
+"hop_div"	"text"		"YES"
+"hop_br"	"text"		"YES"
+"hop_unidad"	"text"		"YES"
+"hop_enemigo"	"text"		"YES"
+"hop_cuadrilla"	"text"		"YES"
+"hop_operacion"	"text"		"YES"
+"hop_ordop"	"text"		"YES"
+"res_accion"	"text"		"YES"
+"hop_accion_enemiga"	"text"		"YES"
+"res_tipo"	"text"		"YES"
+"res_subtipo"	"text"		"YES"
+"res_clase"	"text"		"YES"
+"res_numdoc"	"text"		"YES"
+"res_grado"	"text"		"YES"
+"res_nombre"	"text"		"YES"
+"res_edad"	"text"		"YES"
+"res_sexo"	"text"		"YES"
+"res_especialidad"	"text"		"YES"
+"res_nivel_jer"	"text"		"YES"
+"res_arma"	"text"		"YES"
+"hop_comandante"	"text"		"YES"
+"hop_resumen_hechos"	"text"		"YES"
+"hop_lat"	"text"		"YES"
+"hop_lon"	"text"		"YES"
+"res_judic"	"text"		"YES"
+"res_fecha_judic"	"text"		"YES"
+"cantidad"	"double precision"	"53"	"YES"
+"unidad"	"text"		"YES"
+"res_spoa"	"text"		"YES"
+"res_sigahd"	"text"		"YES"
+"hop_apoyo_blica"	"text"		"YES"
+"hop_apoyo_conat"	"text"		"YES"
+"hop_accion_davaa"	"text"		"YES"
+"fenomeno_de_criminalidad"	"text"		"YES"
+"agr_div"	"text"		"YES"
+"hop_tipo_op"	"text"		"YES"
+"hop_hecho_pos"	"text"		"YES"
+"coordinada"	"text"		"YES"
+"conjunta"	"text"		"YES"
+"tipo_operacion"	"text"		"YES"
+"acam_enemigo"	"text"		"YES"
+"acam_estructura"	"text"		"YES"
+"ene_estructura"	"text"		"YES"
+"HOP_ACCION_CCOES"	"text"		"YES"
+"HOP_APOYO_AEREO"	"text"		"YES"
+"HOP_APOYO_ART"	"text"		"YES"
+"HOP_APOYO_BAFUR"	"text"		"YES"
+"HOP_APOYO_BRCMI"	"text"		"YES"
+"HOP_APOYO_BRCOM"	"text"		"YES"
+"HOP_APOYO_DIVFE"	"text"		"YES"
+"HOP_APOYO_EXDE"	"text"		"YES"
+"HOP_APOYO_FUDAT"	"text"		"YES"
+"HOP_APOYO_GROIC"	"text"		"YES"
+"HOP_APOYO_PJ"	"text"		"YES"
+"HOP_ASALTO_AEREO"	"text"		"YES"
+
+
+
+
+create materialized view public.view_resultados_materializados
+as
+ 	select 
+	hop_fecha_hecho,
+	
+	CASE WHEN agr_div like '%FUTCO%' THEN 'FUTOM'
+	else agr_div
+	end as agr_div,
+	
+	hop_div, 
+	hop_br,
+	hop_unidad,
+	hop_depto,
+	hop_mpio,
+	
+	CASE WHEN hop_enemigo like '%GAO-r disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN hop_enemigo like '%GAO - Residual Disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN hop_enemigo like '%GAO-RESIDUAL%' THEN 'GAO - Residual Disidencias FARC'
+		else hop_enemigo
+		end as hop_enemigo,
+
+	hop_operacion,
+	res_accion,
+	res_tipo,
+	res_subtipo,
+	res_clase,
+	unidad,
+	hop_accion_davaa,
+	hop_apoyo_blica,
+	hop_apoyo_conat,
+	fenomeno_de_criminalidad,
+	cantidad,
+	res_grado,
+	res_nombre,
+	res_numdoc,
+	res_edad,
+
+	CASE WHEN res_subtipo like '%ARMAS DE LARGO ALCANCE%' THEN 'ARMAS DE LARGO ALCANCE'
+		  WHEN res_subtipo like '%ARMAS DE CORTO ALCANCE%' THEN 'ARMAS DE CORTO ALCANCE'
+		  WHEN res_subtipo like '%ARMAS DE ACOMPAÑAMIENTO%' THEN 'ARMAS DE ACOMPAÑAMIENTO'
+		  WHEN res_subtipo like '%MUNICION%' THEN 'MUNICIONES'
+            ELSE '---'
+       END as "armamento",
+
+	hop_lat,
+	hop_lon,
+	hr, 
+	HOP_RESUMEN_HECHOS,
+	HOP_HECHO,
+	RES_SPOA,
+	coordinada,
+	CONJUNTA, 
+	tipo_operacion,
+	HOP_ORDOP,
+	HOP_COMANDANTE,
+	RES_BOLETIN,
+	HOP_HORA_HECHO,
+	HOP_LUGAR,
+	HOP_SITIO,
+	HOP_CUADRILLA,
+	RES_SEXO,
+	RES_ESPECIALIDAD,
+	RES_NIVEL_JER,
+	RES_ARMA,
+	RES_JUDIC,
+	RES_FECHA_JUDIC,
+	RES_SIGAHD,
+	HOP_TIPO_OP,
+	HOP_HECHO_POS, 
+	acam_enemigo, 
+	acam_estructura, 
+	ene_estructura,
+	hop_accion_ccoes,
+	hop_apoyo_aereo,
+	hop_apoyo_art,
+	hop_apoyo_bafur,
+	hop_apoyo_brcmi,
+	hop_apoyo_brcom,
+	hop_apoyo_divfe,
+	hop_apoyo_exde,
+	hop_apoyo_fudat,
+	hop_apoyo_groic,
+	hop_apoyo_pj,
+	hop_asalto_aereo,
+	apoyo_coeej,
+	unidad_brcmi
+
+
+	from resultados;
+
+create materialized view public.view_hechos_materializados
+as
+ 	select 
+	hecho,
+	fecha_hecho,
+
+	CASE WHEN agr_div like '%FUTCO%' THEN 'FUTOM'
+	else agr_div
+	end as agr_div,
+
+	division, 
+	brigada,
+	unidad,
+	dpto,
+	mpio,
+
+	CASE WHEN enemigo like '%GAO-r disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN enemigo like '%GAO - Residual Disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN enemigo like '%GAO-RESIDUAL%' THEN 'GAO - Residual Disidencias FARC'
+		else enemigo
+		end as enemigo,
+
+	estrategia_afecta,
+	hop_accion_davaa,
+	hop_apoyo_blica,
+	hop_apoyo_conat,
+	hop_hecho_pos,
+	cantidad,
+	hop_operacion,
+	latitud,
+	longitud,
+	hr, 
+	RESUMEN_HECHOS,
+	ACCION_ENEMIGA,
+	HOP_COMPANIA,
+	HOP_PELOTON,
+	HOP_COMANDANTE,
+	SITIO, 
+	coordinada,
+	CONJUNTA,
+	tipo_operacion,
+	HOP_ORDOP,
+	BOLETIN,
+	LUGAR,
+	HOP_INICIATIVA, 
+	HOP_CLASE_SOLDADO,
+	HOP_PROC_INFO,
+	HOP_EXITO,
+	HOP_HORA_HECHO, 
+	acam_enemigo, 
+	acam_estructura, 
+	ene_estructura,
+	hop_accion_ccoes,
+	hop_apoyo_aereo,
+	hop_apoyo_art,
+	hop_apoyo_bafur,
+	hop_apoyo_brcmi,
+	hop_apoyo_brcom,
+	hop_apoyo_divfe,
+	hop_apoyo_exde,
+	hop_apoyo_fudat,
+	hop_apoyo_groic,
+	hop_apoyo_pj,
+	hop_asalto_aereo,
+	apoyo_coeej,
+	unidad_brcmi
+
+	from hechos;
+
+
+
+create  view public.view_resultados_materializados
+as
+ 	select 
+	hop_fecha_hecho,
+	
+	CASE WHEN agr_div like '%FUTCO%' THEN 'FUTOM'
+	else agr_div
+	end as agr_div,
+	
+	hop_div, 
+	hop_br,
+	hop_unidad,
+	hop_depto,
+	hop_mpio,
+	
+	CASE WHEN hop_enemigo like '%GAO-r disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN hop_enemigo like '%GAO - Residual Disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN hop_enemigo like '%GAO-RESIDUAL%' THEN 'GAO - Residual Disidencias FARC'
+		else hop_enemigo
+		end as hop_enemigo,
+
+	hop_operacion,
+	res_accion,
+	res_tipo,
+	res_subtipo,
+	res_clase,
+	unidad,
+	hop_accion_davaa,
+	hop_apoyo_blica,
+	hop_apoyo_conat,
+	fenomeno_de_criminalidad,
+	cantidad,
+	res_grado,
+	res_nombre,
+	res_numdoc,
+	res_edad,
+
+	CASE WHEN res_subtipo like '%ARMAS DE LARGO ALCANCE%' THEN 'ARMAS DE LARGO ALCANCE'
+		  WHEN res_subtipo like '%ARMAS DE CORTO ALCANCE%' THEN 'ARMAS DE CORTO ALCANCE'
+		  WHEN res_subtipo like '%ARMAS DE ACOMPAÑAMIENTO%' THEN 'ARMAS DE ACOMPAÑAMIENTO'
+		  WHEN res_subtipo like '%MUNICION%' THEN 'MUNICIONES'
+            ELSE '---'
+       END as "armamento",
+
+	hop_lat,
+	hop_lon,
+	hr, 
+	HOP_RESUMEN_HECHOS,
+	HOP_HECHO,
+	RES_SPOA,
+	coordinada,
+	CONJUNTA, 
+	tipo_operacion,
+	HOP_ORDOP,
+	HOP_COMANDANTE,
+	RES_BOLETIN,
+	HOP_HORA_HECHO,
+	HOP_LUGAR,
+	HOP_SITIO,
+	HOP_CUADRILLA,
+	RES_SEXO,
+	RES_ESPECIALIDAD,
+	RES_NIVEL_JER,
+	RES_ARMA,
+	RES_JUDIC,
+	RES_FECHA_JUDIC,
+	RES_SIGAHD,
+	HOP_TIPO_OP,
+	HOP_HECHO_POS, 
+	acam_enemigo, 
+	acam_estructura, 
+	hop_cuadrilla,
+	hop_accion_ccoes,
+	hop_apoyo_aereo,
+	hop_apoyo_art,
+	hop_apoyo_bafur,
+	hop_apoyo_brcmi,
+	hop_apoyo_brcom,
+	hop_apoyo_divfe,
+	hop_apoyo_exde,
+	hop_apoyo_fudat,
+	hop_apoyo_groic,
+	hop_apoyo_pj,
+	hop_asalto_aereo,
+	apoyo_coeej,
+	unidad_brcmi
+
+
+	from resultados;
+
+create  view public.view_hechos_materializados
+as
+ 	select 
+	hecho,
+	fecha_hecho,
+
+	CASE WHEN agr_div like '%FUTCO%' THEN 'FUTOM'
+	else agr_div
+	end as agr_div,
+
+	division, 
+	brigada,
+	unidad,
+	dpto,
+	mpio,
+
+	CASE WHEN enemigo like '%GAO-r disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN enemigo like '%GAO - Residual Disidencias FARC%' THEN 'GAO - Residual Disidencias FARC'
+		 WHEN enemigo like '%GAO-RESIDUAL%' THEN 'GAO - Residual Disidencias FARC'
+		else enemigo
+		end as enemigo,
+
+	estrategia_afecta,
+	hop_accion_davaa,
+	hop_apoyo_blica,
+	hop_apoyo_conat,
+	hop_hecho_pos,
+	cantidad,
+	hop_operacion,
+	latitud,
+	longitud,
+	hr, 
+	RESUMEN_HECHOS,
+	ACCION_ENEMIGA,
+	HOP_COMPANIA,
+	HOP_PELOTON,
+	HOP_COMANDANTE,
+	SITIO, 
+	coordinada,
+	CONJUNTA,
+	tipo_operacion,
+	HOP_ORDOP,
+	BOLETIN,
+	LUGAR,
+	HOP_INICIATIVA, 
+	HOP_CLASE_SOLDADO,
+	HOP_PROC_INFO,
+	HOP_EXITO,
+	HOP_HORA_HECHO, 
+	acam_enemigo, 
+	acam_estructura, 
+	ene_estructura,
+	hop_accion_ccoes,
+	hop_apoyo_aereo,
+	hop_apoyo_art,
+	hop_apoyo_bafur,
+	hop_apoyo_brcmi,
+	hop_apoyo_brcom,
+	hop_apoyo_divfe,
+	hop_apoyo_exde,
+	hop_apoyo_fudat,
+	hop_apoyo_groic,
+	hop_apoyo_pj,
+	hop_asalto_aereo,	apoyo_coeej,
+	unidad_brcmi
+
+	from hechos
+
+
+
+REFRESH MATERIALIZED VIEW view_resultados_materializados
+
+
+
+CREATE TABLE public."eventos"
+(
+    id_no serial primary key,
+    boletin_interno text ,
+    fecha date,
+    hora text ,
+    agr_div text ,
+	division text,
+    brigada text ,
+    unidad text ,
+    amenaza text,
+	subestructura text,
+    departamento text,
+	municipio text,
+	sitio text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n text,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l text,
+	coordenadas_x double precision,
+	coordenadas_y double precision,
+	tipo_evento text,
+	resumen text,
+	denuncia text,
+	numero_denuncia text,
+	fiscalia text,
+	estado text,
+	nom_boletin text,
+	nom_radiograma text,
+	nom_denuncia text, 
+	nom_inf_cdte_batallon text,
+    direcion text
+
+);
+
+create materialized view view_eventos
+as
+ 	select * from eventos;
+
+REFRESH MATERIALIZED VIEW view_eventos;
+
+
+create function SP_actualizar_eventos() returns trigger
+as
+
+$$
+begin
+
+REFRESH MATERIALIZED VIEW view_eventos;
+
+return new;
+
+end
+$$
+Language plpgsql
+
+CREATE TRIGGER actulizar_eventos
+AFTER  insert or update or delete
+	ON eventos
+FOR EACH ROW 
+	EXECUTE PROCEDURE SP_actualizar_eventos();
+
+
+CREATE TABLE usuarios_dirop (
+	id serial primary key, 
+	nombre text,
+	usuario text,
+	contrasenia text,
+	foto text,
+	roll text,
+	tipo_unidad text,
+	unidad text,
+	per_view boolean,
+	per_select boolean,
+	per_insert boolean,
+	per_update boolean,
+	per_delete boolean,
+	resultados boolean,
+	eventos boolean,
+	usuarios boolean,
+	chat boolean,
+	conf_narcotrafico boolean,
+	operaciones boolean,
+	personal boolean,
+	orden boolean,
+	afectaciones_fuera_comabte boolean,
+	boletin_coe boolean,
+	boletin_cuadros_coe boolean,
+	boletin_res_div boolean,
+	cartilla_presidencial_larga boolean,
+	cartilla_presidencial_corta boolean,
+	boletin_diseo boolean,
+	boletin_diseo_semanal boolean,
+	comando_general boolean,
+	Estadistica_resultados boolean,
+	com_resultados_reducido boolean,
+	narcotrafico boolean,
+	artemisa boolean,
+	artemisa_comparativo boolean,
+	contrabando boolean,
+	contrabando_comparativo boolean,
+	mineria boolean,
+	mineria_comparativo boolean,
+	comparativo_enemigo boolean,
+	comparativo_mapa boolean,
+	comparativo_resultados boolean,
+	afectacion_a_la_amenaza boolean,
+	afectacion_comparativa_p_t boolean,
+	lis_afectaciones boolean,
+	afectaciones_mapa boolean,
+	afectaciones_cuadros boolean,
+	regiones boolean,
+	resaltantes boolean,
+	reslatantes_divisiones boolean,
+	bullets boolean,
+	boltin_dirop boolean,
+	estadistica_eventos boolean,
+	informe_eventos boolean,
+	
+	unidad_dependencia text,
+	datos text,
+	alerta boolean
+
+)
+insert into usuarios_dirop(nombre, usuario, contrasenia, roll, tipo_unidad, unidad) values ("ADM", "AMD", "scrypt:32768:8:1$ePSRmjYubMDEO4IQ$60a0c13d30d40e0aabc632cb49c01153c0d85a421a143fe34cc8a9604a9c9e9acc7aad0de64cf4648a24677c96b5bdbd493742e98e08a720f2b47db6a05ef440", "AMD", "EJC", "EJC" )
+
+
+CREATE TABLE alertas (
+	id serial primary key, 
+	numero text,
+	fecha date,
+	hora text,
+	origen text,
+	destino text,
+	grd_recibe text,
+	nombre_recibe text,
+	cargo text,
+	telefono text,
+	grd_remitente text,
+	nombre_remitente text,
+	cargo_remitente text,
+	telefono_remitente text,
+    departamento text,
+	municipio text,
+	sitio text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n text,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l text,
+	coordenadas_x double precision,
+	coordenadas_y double precision,
+	fecha_registro date,
+	hora_registro text,
+	numero_folio_registro text,
+	enemigo text,
+	accion_enemiga text,
+	fuerza text,
+	destino_criptografo text,
+	grd_recibe_criptografo text,
+	nombre_recibe_criptografo text,
+	telefono_criptografo text,
+	cargo_criptografo text, 
+	acta text
+
+)
+
+CREATE TABLE coordinadores (
+
+	id serial primary key,
+	grd_coordinador text,
+	nombre_coordinador text,
+	cargo_coordinador text,
+	sigla_unidad text,
+	nombre_unidad text,
+	tel_coordinador text
+)
+
+
+CREATE TABLE inventarios_unidad (
+
+	id serial primary key,
+	fecha_asignacion date,
+	director text,
+	director_cargo text,
+	seccion text,
+	seccion_cargo text,
+	responsable text,
+	responsable_cargo text,
+	foto text,
+	documento text
+)
+
+CREATE TABLE inventarios_unidad_material (
+
+	id serial primary key,
+	id_inventarios_unidad  text,
+
+	numero_activo text,
+	denominacion text,
+	numero_de_serie text,
+	numero_de_inventario text,
+	valor text,
+	ubicacion_material text
+
+
+)
+
+CREATE TABLE inventarios_unidad_observaciones (
+
+	id serial primary key,
+	id_inventarios_unidad  text,
+
+	observaciones_elemento text
+
+)
+
+CREATE TABLE formulario_1_dipse (
+
+	id serial primary key,
+
+	NIT_institucion  text,
+	NIT_iContratista text,
+	Institucion_a_la_que_pertenece text,
+	Clasificacion_de_la_novedad text,
+	Si_eligio_otro_diga_cual text,
+	Tipo_de_vinculación_del_Accidentado_Lesionado text,
+	Jefatura_de_Estado_Mayor_organico text,
+	Division_organico text,
+	Comando_organico text,
+	Fuerza_de_tarea_organico text,
+	CEDE_organico text,
+	Brigada_Dirección_Regimiento_organico text,
+	Unidad_organico text,
+
+	Jefatura_de_Estado_Mayor_actual text,
+	Division_actual text,
+	Comando_actual text,
+	Fuerza_de_tarea_actual text,
+	CEDE_actual text,
+	Brigada_Dirección_Regimiento_actual text,
+	Unidad_actual text,
+
+	EPS_a_la_que_pertenece text,
+	ARL_a_la_que_pertenece text,
+	Fecha_del_evento text,
+	Hora text,
+	Ciudad_Municipio text,
+	Departamento text,
+	Vereda_corregimiento_o_barrio text,
+
+	grd_lat text,
+	min_lat text,
+	seg_lat text,
+	
+	grd_lot text,
+	min_lot text,
+	seg_lot text,
+
+	Caracteristicas_del_lugar text,
+	Sitio_especifico text,
+
+	Grado_cdte_directo text,
+	Nombre_cdte_directo text,
+	Cargo_cdte_directo text,
+	
+	Grado_cdte_segundo_nivel text,
+	Nombre_cdte_segundo_nivel text,
+	Cargo_cdte_segundo_nivel text,
+
+	Documento_de_identidad text,
+	Grado text,
+	Nombre_y_apellido text,
+	Ciudad_afectado text,
+	Departamento_afectado text,
+	Dirección_de_la_persona_afectado text,
+	Fecha_de_ingreso_a_la_institución_afectado text,
+	Cargo_afectado text,
+	Tiempo_total_de_servicio_anio text,
+	Tiempo_total_de_servicio_meses text,
+	Telefono_de_contacto_lesionado text,
+	Telefono_de_contacto_acudiente text,
+	Salarios_u_Honorarios_Mensual_PERSONAL_DE_PLANTA text,
+	Atencion_inmediata_que_se_dio_al_evento text,
+	Sexo text,
+
+	Fecha_de_nacimiento text,
+	Edad text,
+	Parte_del_cuerpo_aparentemente_afectada text,
+	Descipcion_parte_del_cuerpo_afectada text,
+	Tiempo_de_Experiencia_anio text,
+	Tiempo_de_Experiencia_meses text,
+	Resumen text,
+
+	Actividad_realizada_en_el_momento_del_evento text,
+	CLASE_NOVEDAD text,
+	TIPO_DE_NOVEDAD text,
+	Estaba_realizando_su_actividad_habitua text,
+	Si_eligio_cual text,
+	Tiempo_laborado_el_día_de_la_novedad text,
+	Causo_la_muerte_de_la_persona text,
+	Identificacion_del_peligro_o_amenaza text,
+	Agente_de_la_lesion text,
+	Mecanismo_de_la_lesion text,
+	Otro_cual text,
+
+	Informacion_Vehiculo text,
+	Tipo_de_Vehiculo text,
+	Placas_o_sigla text,
+	Marca text,
+	Nombre_testigo text,
+	Telefono_testigo text,
+
+	Nombre_quien_reporta_arl text,
+	Grado_quien_reporta_arl text,
+	Cargo_quien_reporta_arl text,
+	
+	Nombre_quien_reporta text,
+	Grado_quien_reporta text,
+	Cargo_quien_reporta text,
+
+	Nombre_cdte text,
+	Grado_cdte text,
+
+	OBSERVACIONES text,
+	FECHA_REPORTE text,
+	NUMERO_DE_RADICADO_ARL text, 
+
+	DIAS_DE_INCAPACIDAD text,
+	RECUPERADO_SI_NO text,
+	OBSERVACION_RECUPERADO text,
+	RADICADO_SIJEN_INVESTIGACION_DISCIPLINARIA  text,
+	ESTADO_INVESTIGACION_DISCIPLINARIA text,
+	OBSERVACIONES_INVESTIGACIONES_DISCIPLINARIAS text,
+	RADICADO_SIJEN_INVESTIGACION_ADMINISTRATIVAS  text,
+	ESTADO_INVESTIGACION_ADMINISTRATIVA text,
+	OBSERVACIONES_INVESTIGACIONES_ADMINISTRATIVAS text,
+	LITERAL_INFORMATIVO_ADMINISTRATIVO_POR_LESION text,
+	OBSERVACION_INFORMATIVOS_ADMINISTRATIVOS_POR_LESION text,
+	TIPO_NOVEDAD text
+
+)
+
+
+create table eventos_relevantes_boletin (
+
+	id serial primary key,
+	fecha_evento text, 
+	tipo_evento text, 
+	divi_padre text, 
+	enemigo text, 
+	resumen text
+)
+
+
+create table ataque_drones (
+
+	id serial primary key,
+	fecha text, 
+	hora text, 
+	division text, 
+	enemigo text, 
+	departamento text,
+	municipio text,
+	lugar text,
+
+	lat text,
+	grd_lat text,
+	min_lat text,
+	seg_lat text,
+
+	lot text,
+	grd_lot text,
+	min_lot text,
+	seg_lot text,
+
+	ofi text,
+	sub text,
+	slp text,
+	sl12 text,
+	sl18 text,
+
+	ofi_heridos text,
+	sub_heridos text,
+	slp_heridos text,
+	sl12_heridos text,
+	sl18_heridos text,
+
+
+	unidad text,
+	ataques_efectuados text,
+	coordenadas_x text,
+	coordenadas_y text,
+	resumen_efectuados text
+
+)
+
+
+CREATE TABLE aetcr (
+	id serial primary key,
+	foto_aetcr text,
+	foto_user_name text,
+	numero text,
+	fecha text,
+	nombre_aetcr text,
+	nivel_de_seguridad text,
+	cant_mujeres text,
+	cant_hombres text,
+	departamento text,
+	municipio text,
+	sitio text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n text,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l text,
+	coordenadas_x text,
+	coordenadas_y text,
+	nombre_aetcr_encargado text,
+	seudonimo_aetcr_encargado text,
+	celular_aetcr_encargado text,
+	ubicacion_aetcr_encargado text
+
+);
+CREATE TABLE cantidad_per_anio (
+	id serial primary key,
+	id_aetcr text,
+	aetcr text,
+	anio text,
+	cantidad text
+	);
+CREATE TABLE servicio_publico (
+	id serial primary key,
+	id_aetcr text,
+	aetcr text,
+
+	servicios_basicos text,
+	servicios_basicos_selecionados text,
+	cantidad_tipo text,
+	cantidad_infor_servicios text
+
+	);
+
+CREATE TABLE pelotones_aetcr (
+	id serial primary key,
+	cordenada_x text,
+	cordenada_y text,
+	fecha_registro text,
+	numero_hr text,
+	divi_padre text,
+	divi_hija text,
+	brigada text,
+	batallon text,
+	compania text,
+	peloton text,
+	grd text,
+	nombre_cdte text,
+	telefono_cdte text,
+	ofi text,
+	sub text,
+	slp text,
+	sl_18 text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n text,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l text,
+	vereda text,
+	nombre_aetcr text,
+	numero text
+)
+
+
+CREATE TABLE personal (
+
+	id serial primary key,
+	grd text,
+	apellidos text,
+	nombres text,
+	cedula text,
+	fecha_cumpleaños text,
+	tel_principal text,
+	correo_ejc text,
+	correo_civil text,
+
+	departamento text,
+	municipio text,
+	barrio text,
+	direcion_principal text,
+
+	departamento_fuera text,
+	municipio_fuera text,
+	barrio_fuera text,
+	direcion_principal_fuera text,
+
+	telefono_alterno text,
+	nombre_contacto text,
+	parentesco text,
+
+	fecha_unidad date,
+	cargo text,
+	fecha_cargo date,
+	foto text, 
+	valor_grado integer
+
+);
+
+CREATE TABLE Cargos_personal (
+
+	id serial primary key,
+	id_personal text,
+	cedula text,
+	cargo text,
+	fecha_inicio_cargo date,
+	fecha_termino_cargo date,
+	tiempo_cargo text
+
+)
+
+CREATE TABLE asignacion_plazos (
+
+	id serial primary key,
+	orfeo text,
+    funcionario text,
+    cargo text,
+    op_inmedita boolean,
+    estrito_cumplimiento boolean,
+    para_su_control boolean,
+    autorizado boolean,
+    no_autorizado boolean,
+    lo_de_su_cargo boolean,
+    firma_coejc boolean,
+    firma_secej boolean,
+    firma_jemop boolean,
+    firma_dirop boolean,
+    resuelva_informe boolean,
+    seguimiento boolean,
+    estudie_recomiende boolean,
+    trate_conmigo boolean,
+    de_acuerdo_norma boolean,
+    asistir boolean,
+    archivar boolean,
+    agendar boolean,
+    difundir boolean,
+    remitir boolean,
+    div1 boolean,
+    div2 boolean,
+    div3 boolean,
+    div4 boolean,
+    div5 boolean,
+    div6 boolean,
+    div7 boolean,
+    div8 boolean,
+    davaa boolean,
+    divfe boolean,
+    futco boolean,
+    orden text,
+    fecha_plazo text,
+    respuesta text,
+    fecha_plazo_respuesta text,
+	documento text,
+	cumplido text,
+	cumplido_soporte text,
+	fecha_cumplimiento text,
+	observaciones text,
+	dir_doc_plazo text,
+	devolver boolean,
+	confirmacion text,
+	fecha_confirmacion text,
+	cumplio_respuesta text, 
+	fecha_plazo_respuesta_cumplido text,
+	observaciones_respuesta text,
+	cumplido_soporte_respuesta text,
+	valiacion_cumplido_soporte_respuesta text,
+	asunto text
+
+	)
+	select * from asignacion_plazos where respuesta = 'SI' 
+	2025517012570753
+
+UPDATE asignacion_plazos
+SET respuesta = 'NO',
+;
+
+CREATE TABLE creacion_ordenes_directas (
+
+	id serial primary key,
+	nivel_orden text,
+	unidad_que_genera text,
+	clasificacion text,
+	orden_excel text,
+	orfeo text,
+	doc_radicado text,
+	fecha_orden text,
+	asunto text,
+	orden text,
+	obervaciones text
+
+	)
+
+CREATE TABLE proyecto (
+	id serial primary key,
+	proyecto text
+);
+CREATE TABLE medallas (
+	id serial primary key,
+	recibidad_por  text,
+	medalla  text, 
+	fecha_ingreso  text,
+	fecha_mes  text,
+	oficio  text,
+	radicado  text,
+	batallon  text,
+	brigada  text,
+	division  text,
+	grd  text,
+	arma  text,
+	cedula  text,
+	nombre_apellido  text,
+	categoria  text,
+	operacion  text,
+	motivo  text,
+	fecha_hecho  text,
+	fecha_hecho_final  text,
+	departamento  text,
+	municipio text,
+	veredad  text,
+	amenaza  text,
+	resumen  text,
+	enrega_medalla_difab text,
+	estado_medalla text,
+	resolucion text,
+	decreto text,
+	fecha_resolucion text,
+	proyecto text, 
+	como text, 
+	area_de_responsabilidad text,
+	observaciones text
+)
+ UPDATE medallas
+	SET estado_medalla = 'TRAMITE DIROP',
+;
+
+CREATE TABLE registro_insitop (
+	id serial primary key,
+	ARMA	text,
+	FECHA_INSITOP	text,
+	DEPARTAMENTO	text,
+	MUNICIPIO	text,
+	LUGAR	text,
+	DETALLES_DEL_LUGAR	text,
+	LATITUD	text,
+	LONGITUD	text,
+	SIGLA_DIVISION	text,
+	SIGLA_BRIGADA	text,
+	SIGLA_UNIDD	text,
+	COMPANIA	text,
+	PELOTON	text,
+	COMANDANTE	text,
+	CELULAR_COMANDANTE	text,
+	OFICIALES	text,
+	SUBOFICIALES	text,
+	SLP	text,
+	SL18	text,
+	SL12	text,
+	TOTAL_SOLDADOS	text,
+	EXDE	text,
+	LINEA_DE_OPERACIONES	text,
+	ORD_ESC_BAT	text,
+	CODE	text,
+	OPERACION	text,
+	TAREAS_ACCION_DECISIVA_TTF	text,
+	TAREA	text,
+	TECNICAS_ACTIVIDADES	text,
+	TAREA_ESPECIAL	text,
+	RELACION_DE_MANDO	text,
+	OBSERVACIONES	text
+)
+
+CREATE TABLE pazos_fronterizos(
+	id serial primary key,
+	fecha_pazos	date	,
+	paso text,
+	nombre_paso text,
+	tipo_paso text,
+	latitud text,
+	lat_g text,
+	lat_m text,
+	lat_s text,
+	longitud text,
+	lot_g text,
+	lot_m text,
+	lot_s text,
+	pais text,
+	departamento text,
+	municipio text,
+	responsabilidad text,
+	div text,
+	br text,
+	ut text,
+	indicativo text,
+	cdte text,
+	ofi text,
+	sub text,
+	slp text,
+	sl18 text,
+	latitud_unidad text,
+	lat_unidad__g text,
+	lat_unidad__m text,
+	lat_unidad__s text,
+	longitud_unidad text,
+	lot_unidad__g text,
+	lot_unidad__m text,
+	lot_unidad__s text,
+	distancia text,
+	base text,
+	evento_ultimas_horas text,
+	x text,
+	y text,
+	x_2 text,
+	y_2 text
+)
+
+CREATE TABLE pazos_fronterizos_directiva(
+	id serial primary key,
+	OID text,
+	Codigo text,
+	Topologia text,
+	Division text,
+	Brigada text,
+	Batallon text,
+	Lugar text,
+	Municipio text,
+	Departamen text,
+	Frontera text,
+	Tipo_de_Pa text,
+	Responsabi text,
+	x text,
+	y text
+)
+
+
+CREATE TABLE registro_eventos_relevantes(
+	id serial primary key,
+	fecha_evento date,
+	hora_evento time,
+	divi_padre text,
+	divi_hija text,
+	brigada text,
+	batallon text,
+	cp text,
+	pel text,
+	departamento text,
+	municipio text,
+	sitio text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n text,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l text,
+	enemigo text,
+	estructura text,
+	hecho text,
+	resumen text, 
+	estado text,
+	tipo_evento text,
+	color text,
+	fecha_hora_militar text,
+	color_titulo  text,
+	X text,
+	Y text,
+	documento_maniobra text, 
+	documento_lamina_afectaciones text, 
+	documento_otros text 
+
+)
+
+
+
+
+
+CREATE TABLE bitacora(
+	id serial primary key,
+	id_evento text,
+	fecha_evento date,
+	hora_evento time,
+	evento text
+)
+CREATE TABLE registro_afectacion(
+	id serial primary key,
+	id_evento text,
+	grd text,
+	apellidos_nombres text,
+	afectacion text,
+	cc text,
+	estado_civil text,
+	tiempo_servicio text,
+	situacion_actual text,
+	familiares text,
+	coordinador text, 
+	foto text
+
+)
+
+
+CREATE TABLE UNIDAD_SOLICITANTE(
+	id serial primary key,
+	unidad text
+);
+
+CREATE TABLE FIRMA_PLANILLA(
+	id serial primary key,
+	sub_aux_apoy_terr text,
+	ofi_apoy_terr text,
+	ofi_coe text,
+	dir_ope text
+);
+CREATE TABLE PLANILLA_MOVIMIENTO(
+	id serial primary key,
+	hr_movimiento text,
+	fecha_inicio date,
+	fecha_termino date,
+	unidad_solicitante text,
+	tipo_escolta text,
+	ruta_completa text,
+	motivos_escolta text,
+	unidades_comprometidas text,
+	hr_unidad text,
+	cantidad_vehiculos text,
+	cantidad_faces text,
+	encargado_material text,
+	telefono text,
+	estado_escolta telefono text,
+	observcaiones telefono text
+);
+
+CREATE TABLE BOLETIN_COE(
+	id serial primary key,
+	numero_boletin text,
+	fecha date,
+	grado_ofi text,
+	apellidos_nombres_ofi text,
+	grado_sub text,
+	apellidos_nombres_sub text
+);
+
+
+CREATE TABLE ANOTACIONES_BOLETIN_OPERACIONAL(
+	id serial primary key,
+	boletin text,
+	fecha_evento date,
+	hora_evento time,
+	divi_padre text,
+	divi_hija text,
+	brigada text,
+	batallon text,
+	departamento text,
+	municipio text,
+	sitio text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n text,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l text,
+	enemigo text,
+	estructura text,
+	hecho text,
+	resumen text, 
+	estado text,
+	tipo_evento text,
+	color text,
+	fecha_hora_militar text,
+	color_titulo  text,
+	X text,
+	Y text
+
+);
+
+CREATE TABLE resultado_boletin(
+	id serial primary key,
+	boletin text,
+	fecha_resultado date,
+	resultado text,
+	cantidad_resultado text
+);
+
+CREATE TABLE resultado_boletin_registrar(
+	id serial primary key,
+	resultado text
+);
+
+CREATE TABLE hechos_resultados(
+	id serial primary key,
+	hechos text
+)
+
+CREATE TABLE regiones_especilaes(
+	id serial primary key,
+	region text,
+	departamento text,
+	municipio text,
+)
+
+create table afectaciones_q5(
+	id serial primary key,
+	fecha_evento  text,
+	hora_evento  text,
+	departamento  text,
+	municipio  text,
+	latitud text,
+	gr_n  text,
+	m_n  text,
+	s_n  text,
+	longitud  text,
+	gr_l  text,
+	m_l  text,
+	s_l  text,
+	hecho  text,
+	resumen  text,
+	enemigo  text,
+	tipo_evento  text,
+	tipo_fuerza  text,
+	divi_padre  text,
+	cp  text,
+	pel  text,
+	divi_hija  text,
+	brigada  text,
+	batallon  text,
+	sitio  text,
+	estructura  text,
+	hecho_nuevo  text,
+	x  text,
+	y  text,
+	color text,
+	fecha_hora_militar text,
+	color_titulo text
+);
+
+
+CREATE TABLE resultado_afectacion_q5(
+	id serial primary key,
+	id_q5_afectacion text,
+	fecha_resultado date,
+	resultado text,
+	grd text,
+	nombre text
+);
+
+
+
+-- Tabla de Subregiones
+CREATE TABLE subregion (
+  id SERIAL PRIMARY KEY,
+  nombre TEXT NOT NULL,
+  creado_en TIMESTAMP DEFAULT NOW()
+);
+
+-- Tabla de Departamentos guardados con cada subregión
+CREATE TABLE subregion_departamento (
+  id SERIAL PRIMARY KEY,
+  subregion_id INTEGER REFERENCES subregion(id) ON DELETE CASCADE,
+  nombre TEXT NOT NULL
+);
+
+-- Tabla de Municipios guardados con cada subregión-departamento
+CREATE TABLE subregion_municipio (
+  id SERIAL PRIMARY KEY,
+  subregion_departamento_id INTEGER REFERENCES subregion_departamento(id) ON DELETE CASCADE,
+  nombre TEXT NOT NULL
+);
+CREATE TABLE unidades (
+    sigla_div      VARCHAR(100),
+    sigla_br       VARCHAR(100),
+    ut             VARCHAR(100),
+    nombre         TEXT,
+    departamento   VARCHAR(100),
+    ciudad         VARCHAR(100),
+    disposicion    TEXT
+);
+
+CREATE TABLE actulizacion_data (
+    id SERIAL PRIMARY KEY,
+    descripcion TEXT,
+    creada_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+select * from hechos where fecha_hecho > '2025-01-01'
+
+CREATE TABLE despliegue_unidades (
+    sigla_division VARCHAR(10),
+    sigla_brigada VARCHAR(10),
+    sigla_unidad VARCHAR(10),
+    compania VARCHAR(10),
+    peloton VARCHAR(10),
+    comandante VARCHAR(200),
+    telefono VARCHAR(20),
+    oficiales INT,
+    suboficiales INT,
+    soldados INT,
+    departamento VARCHAR(100),
+    municipio VARCHAR(100),
+    sitio VARCHAR(200),
+    puesto VARCHAR(200),
+    mesas INT,
+    potencial_electoral INT,
+    fecha_ocupacion DATE,
+    fecha_repliegue DATE,
+    latitud DECIMAL(12,8),
+    longitud DECIMAL(12,8),
+    ejercito CHAR(1),
+    policia CHAR(1),
+    armada CHAR(1),
+    fac CHAR(1),
+    ej_ponal CHAR(1),
+    ej_arc CHAR(1),
+    ponal_arc CHAR(1),
+    ponal_fac CHAR(1),
+    responsabilidad VARCHAR(50),
+    observaciones TEXT
+);
+CREATE TABLE puestos_votacion (
+    dd              TEXT,
+    mm              TEXT,
+    zz              TEXT,
+    pp              TEXT,
+    departamento    TEXT,
+    municipio       TEXT,
+    nombre_del_puesto TEXT,
+    mujeres         INTEGER,
+    hombres         INTEGER,
+    total_potencial INTEGER,
+    mesas           INTEGER,
+    nombre_comuna_localidad TEXT,
+    direccion       TEXT,
+    lat_p           TEXT,
+    g_p             TEXT,
+    m_p             TEXT,
+    s_p             TEXT,
+    lon_p           TEXT,
+    g_p_l           TEXT,
+    m_p_l           TEXT,
+    s_p_l           TEXT,
+    rural           TEXT,
+    urbana          TEXT,
+    ejercito_nacional TEXT,
+    policia_nacional  TEXT,
+    armada_nacional   TEXT,
+	cobertura   TEXT,
+	comunidad_indigena   TEXT,
+    division        TEXT,
+    brigada         TEXT,
+    batallon        TEXT,
+    peloton         TEXT,
+    seccion         TEXT,
+    escuadra        TEXT,
+    indicativo      TEXT,
+    grado_cdte      TEXT,
+    apellido_y_nombre_cdte_responsable_seguridad TEXT,
+    numero_de_telefono_cdte TEXT,
+    lat             TEXT,
+    g_pr            TEXT,
+    m_pr            TEXT,
+    s_pr            TEXT,
+    lon             TEXT,
+    g_pr_l          TEXT,
+    m_pr_l          TEXT,
+    s_pr_l          TEXT,
+    of              INTEGER,
+    sub             INTEGER,
+    slp             INTEGER,
+    sl18            INTEGER,
+    total           INTEGER,
+    m               INTEGER,
+    f               INTEGER,
+    si              INTEGER,
+    no              INTEGER,
+    ponal           TEXT,
+    arc             TEXT,
+    fac             TEXT
+);
+
+CREATE TABLE unidades_reserva (
+    id SERIAL PRIMARY KEY,
+    departamento VARCHAR(100),
+    municipio VARCHAR(100),
+    lugar_de_ubicacion VARCHAR(150),
+    lat VARCHAR(5),
+    lat_g INT,
+    lat_m INT,
+    lat_s INT,
+    lon VARCHAR(5),
+    lon_g INT,
+    lon_m INT,
+    lon_s INT,
+    division VARCHAR(50),
+    brigada VARCHAR(50),
+    batallon VARCHAR(50),
+    peloton VARCHAR(50),
+    seccion VARCHAR(50),
+    indicativo VARCHAR(100),
+    grado_cdte VARCHAR(10),
+    apellido_y_nombre_cdte VARCHAR(150),
+    numero_de_telefono_cdte VARCHAR(20),
+    of INT,
+    sub INT,
+    slp INT,
+    sl18 INT,
+    total INT,
+    m INT,
+    f INT,
+    actividad VARCHAR(100)
+);
+
+CREATE TABLE resumen_divisiones (
+    unidad VARCHAR(10) PRIMARY KEY,
+    puestos_comprometidos INTEGER,
+    avance_cubrimientos INTEGER,
+    porcentaje NUMERIC(10,6)
+);
+CREATE TABLE diviplo (
+    dd CHAR(2),
+    mm CHAR(3),
+    zz CHAR(2),
+    pp CHAR(2),
+    departamen VARCHAR(100),
+    municipio VARCHAR(100),
+    puesto VARCHAR(200),
+    mujeres INT,
+    hombres INT,
+    total INT,
+    mesas INT,
+    comuna VARCHAR(150),
+    direccion VARCHAR(200),
+    latitud DECIMAL(15,10),
+    longitud DECIMAL(15,10),
+    tipo_de_pu VARCHAR(20),
+    unidad VARCHAR(10),
+    nombre_unidad VARCHAR(100)
+);
+
+
+
+-- ===========================================
+-- Tabla 1: valor_material
+-- Guarda materiales y su valor en COP
+-- ===========================================
+
+CREATE TABLE valor_material (
+    id SERIAL PRIMARY KEY,                -- Identificador único
+    variable TEXT NOT NULL,       -- Nombre del material (ej: "Acero")
+    valor_cop NUMERIC(18,2) NOT NULL,     -- Valor en pesos colombianos
+    fecha_registro TIMESTAMP DEFAULT NOW()  -- Fecha automática de registro
+);
+
+-- ===========================================
+-- Tabla 2: valor_dolar
+-- Guarda valores del dólar con su fecha
+-- ===========================================
+
+CREATE TABLE valor_dolar (
+    id SERIAL PRIMARY KEY,                -- Identificador único
+    valor_usd NUMERIC(18,2) NOT NULL,     -- Valor del dólar (ej: 4100.50)
+    fecha_cotizacion DATE NOT NULL,       -- Fecha del valor del dólar
+    fecha_registro TIMESTAMP DEFAULT NOW()  -- Fecha automática de registro
+);
+
+-- ===========================================
+-- Índices recomendados
+-- ===========================================
+
+CREATE INDEX idx_valor_variable_variable ON valor_material(variable);
+CREATE INDEX idx_valor_dolar_fecha ON valor_dolar(fecha_cotizacion);

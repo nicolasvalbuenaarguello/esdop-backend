@@ -1,0 +1,7 @@
+2025-09-05 21:29:48 [ERROR] Fatal read error on socket transport
+protocol: <uvicorn.protocols.http.httptools_impl.HttpToolsProtocol object at 0x000001C3D4A47C70>
+transport: <_SelectorSocketTransport fd=300 read=polling write=<idle, bufsize=0>>
+Traceback (most recent call last):
+  File "C:\Users\nicolas.valbuena\AppData\Local\Programs\Python\Python310\lib\asyncio\selector_events.py", line 856, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+MemoryError

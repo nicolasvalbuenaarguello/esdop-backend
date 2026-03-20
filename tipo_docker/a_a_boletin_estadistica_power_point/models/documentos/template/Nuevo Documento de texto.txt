@@ -1,0 +1,23 @@
+EVALUACIÓN OBJETIVO ESTRATÉGICO #2 DEBILITAR LAS CAPACIDADES
+DE LA AMENAZA POR DIVISIONES.
+
+# Definir la posición y tamaño de la tabla
+left = top = Inches(2)
+width = Inches(6)
+height = Inches(3)
+
+# Crear la tabla
+shape = slide.shapes.add_table(rows=3, cols=4, left=left, top=top, width=width, height=height)
+table = shape.table
+
+# Datos para la tabla
+data = [
+    ["Nombre", "Edad", "Ciudad", "País"],
+    ["Juan", "30", "Bogotá", "Colombia"],
+    ["Maria", "25", "Medellín", "Colombia"]
+]
+
+# Llenar la tabla con datos
+for row_index, row_data in enumerate(data):
+    for col_index, cell_data in enumerate(row_data):
+        table.cell(row_index, col_index).text = cell_data

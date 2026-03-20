@@ -1,0 +1,360 @@
+CREATE TABLE public.resultados		
+(		
+HR	text	,
+RES_BOLETIN	text	,
+HOP_HECHO	text	,
+HOP_HORA_HECHO	text	,
+HOP_FECHA_HECHO	date	,
+HOP_MES_HECHO	text	,
+HOP_DEPTO	text	,
+HOP_MPIO	text	,
+HOP_LUGAR	text	,
+HOP_SITIO	text	,
+HOP_DIV	text	,
+HOP_BR	text	,
+HOP_UNIDAD	text	,
+HOP_ENEMIGO	text	,
+HOP_CUADRILLA	text	,
+HOP_OPERACION	text	,
+HOP_ORDOP	text	,
+RES_ACCION	text	,
+HOP_ACCION_ENEMIGA	text	,
+RES_TIPO	text	,
+RES_SUBTIPO	text	,
+RES_CLASE	text	,
+RES_NUMDOC	text	,
+RES_GRADO	text	,
+RES_NOMBRE	text	,
+RES_EDAD	text	,
+RES_SEXO	text	,
+RES_ESPECIALIDAD	text	,
+RES_NIVEL_JER	text	,
+RES_ARMA	text	,
+HOP_COMANDANTE	text	,
+HOP_RESUMEN_HECHOS	text	,
+HOP_LAT	text	,
+HOP_LON	text	,
+RES_JUDIC	text	,
+RES_FECHA_JUDIC	text	,
+CANTIDAD	double precision	,
+UNIDAD	text	,
+RES_SPOA	text	,
+RES_SIGAHD	text	,
+HOP_APOYO_BLICA	text	,
+HOP_APOYO_CONAT	text	,
+HOP_ACCION_DAVAA	text	,
+FENOMENO_DE_CRIMINALIDAD	text	,
+AGR_DIV	text	,
+HOP_TIPO_OP	text	,
+HOP_HECHO_POS	text	
+);		
+
+
+
+create view view_resultados as select *  ,
+	 CASE WHEN res_accion like '%CAPTURADO%' THEN 'CAPTURAS'
+	 	  WHEN res_accion like 'SOMETIMIENTO A LA JUSTICIA' THEN 'SOMETIMIENTO A LA JUSTICIA'
+		  WHEN res_accion like '%ENTREGA%' THEN 'ENTREGAS'
+		  WHEN res_accion like '%PRESENTACIONES VOLUNTARIA%' THEN 'PRESENTACIONES VOLUNTARIA'
+		  WHEN res_accion like '%MUERTOS EN DESARROLLO DE OPERACIONES MILITARES%' THEN 'MDOM'
+		  WHEN res_accion like '%ASESINADO(A)%' THEN 'ASESINADO(A)'
+		  WHEN res_accion like '%HERIDO(A)%' THEN 'HERIDO(A)'
+		  WHEN res_accion like '%LIBERADO%' THEN 'LIBERADOS'
+		  WHEN res_accion like '%RESCATADO(A)%' THEN 'RESCATADOS'
+            ELSE '---'
+       END as "RESULTADOS",
+	   	CASE WHEN res_accion like '%RME%' THEN 'MENORES RECUPERADOS'
+            ELSE '---'
+       END
+	   as "MENORES"
+from resultados;
+
+
+CREATE TABLE public.hechos		
+(		
+HR	text	,
+HECHO	text	,
+BOLETIN	text	,
+FECHA_HECHO	date	,
+ACCION_ENEMIGA	text	,
+DIVISION	text	,
+BRIGADA	text	,
+UNIDAD	text	,
+DPTO	text	,
+MPIO	text	,
+SITIO	text	,
+LUGAR	text	,
+ENEMIGO	text	,
+RESUMEN_HECHOS	text	,
+LATITUD	text	,
+LONGITUD	text	,
+ESTRATEGIA_AFECTA	text	,
+HOP_ACCION_DAVAA	text	,
+HOP_HECHO_POS	text	,
+AGR_DIV	text	,
+HOP_INICIATIVA	text	,
+CANTIDAD	double precision	,
+HOP_OPERACION	text	,
+HOP_APOYO_BLICA	text	,
+HOP_APOYO_CONAT	text	,
+HOP_ORDOP	text	,
+HOP_COMANDANTE	text	,
+HOP_COMPANIA	text	,
+HOP_PELOTON	text	,
+HOP_CLASE_SOLDADO	text	,
+HOP_PROC_INFO	text	,
+HOP_EXITO	text	,
+HOP_HORA_HECHO	text	
+);		
+
+create view view_hechos as select *,
+
+	 CASE WHEN HOP_HECHO_POS like 'SI' THEN  1
+	 	  WHEN HOP_HECHO_POS like 'NO' THEN -1
+		  ELSE -1
+		  
+           
+       END as "VALOR HECHO", 
+	   
+	   	 CASE WHEN HOP_HECHO_POS like 'SI' THEN  'POSITIVO'
+	 	  WHEN HOP_HECHO_POS like 'NO' THEN 'NEGATIVO'
+		  ELSE 'SIN RESULTADOS'
+		  
+           
+       END as "TIPO HECHO"
+
+
+from hechos;
+
+CREATE TABLE public.erradicacion		
+(		
+UNIDAD	date	,
+AGR_DIV	text	,
+HOP_DIV	text	,
+HOP_BR	text	,
+HOP_UNIDAD	text	,
+FASE	text	,
+MPIO_ERRADICACION	text	,
+SITIO_ERRADICACION	text	,
+DEPTO_ERRADICACION	text	,
+METODO	text	,
+ENTIDAD	text	,
+CANTIDAD	double precision	
+);	
+
+
+create view view_erradicacion as select *
+from erradicacion;
+
+CREATE TABLE public."veredas_asignadas"
+(
+    id integer NOT NULL,
+    ver_asignadas_muy_alta integer ,
+    ver_cubiertas_muy_alta integer,
+    ver_asignadas_alta integer ,
+    ver_cubiertas_alta integer ,
+    ver_asignadas_moderada integer ,
+    ver_cubiertas_moderada integer ,
+    ver_asignadas_baja integer,
+    ver_cubiertas_baja integer,
+
+
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS public."veredas_asignadas"
+    OWNER to postgres;	
+
+
+
+CREATE TABLE public."pelotones_veredas_asignadas"
+(
+    id integer NOT NULL,
+    division text,
+    pelotones integer,
+    ver_cubiertas integer,
+    ver_faltantes integer,
+
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS public."pelotones_veredas_asignadas"
+    OWNER to postgres;	
+
+
+--- vistas new aplicativo ---
+
+create materialized view view_unidades_materializados
+as
+ 	select DISTINCT  agr_div, division, brigada, unidad, dpto, mpio
+	from hechos
+	where fecha_hecho >= '2015-01-01' 
+	
+
+---- vista ----
+create materialized view view_divisiones_materializados
+as
+ 	select DISTINCT  agr_div 
+	from hechos 
+	ORDER BY agr_div ASC;
+
+
+create materialized view view_divisiones_ft_materializados
+as
+ 	select DISTINCT  division, agr_div, fecha_hecho
+	from hechos
+	where fecha_hecho >= '2015-01-01'
+	ORDER BY division ASC;
+
+create materialized view view_brigadas_materializados
+as
+ 	select DISTINCT brigada, agr_div, fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2015-01-01'
+	ORDER BY brigada ASC;
+
+
+create materialized view view_unidad_materializados
+as
+ 	select DISTINCT  unidad, agr_div, fecha_hecho
+	from hechos
+	where fecha_hecho >= '2015-01-01'  
+	ORDER BY unidad ASC;
+
+create materialized view view_dpto_materializados
+as
+ 	select DISTINCT  dpto, agr_div, fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2015-01-01' 
+	ORDER BY dpto ASC;
+
+
+create materialized view view_mpios_materializados
+as
+ 	select DISTINCT  mpio, agr_div, fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2015-01-01' 
+	ORDER BY mpio ASC;
+
+create materialized view view_hop_operacion_materializados
+as
+ 	select DISTINCT  hop_operacion,  fecha_hecho
+	from hechos 
+	where fecha_hecho >= '2020-05-01' 
+	ORDER BY hop_operacion ASC;
+
+create materialized view view_enemigo_materializados
+as
+ 	select DISTINCT  enemigo 
+	from hechos 
+	ORDER BY enemigo ASC;
+
+create materialized view view_erradicacion_materializados
+as
+ 	select * from erradicacion;
+
+create materialized view view_resultados_materializados
+as
+ 	select 
+	hop_fecha_hecho,
+	agr_div,
+	hop_div, 
+	hop_br,
+	hop_unidad,
+	hop_depto,
+	hop_mpio,
+	hop_enemigo,
+	hop_operacion,
+	res_accion,
+	res_tipo,
+	res_subtipo,
+	res_clase,
+	unidad,
+	hop_accion_davaa,
+	hop_apoyo_blica,
+	hop_apoyo_conat,
+	fenomeno_de_criminalidad,
+	cantidad,
+	res_grado,
+	res_nombre,
+	res_numdoc,
+	res_edad,
+
+	CASE WHEN res_subtipo like '%ARMAS DE LARGO ALCANCE%' THEN 'ARMAS DE LARGO ALCANCE'
+		  WHEN res_subtipo like '%ARMAS DE CORTO ALCANCE%' THEN 'ARMAS DE CORTO ALCANCE'
+		  WHEN res_subtipo like '%ARMAS DE ACOMPAÑAMIENTO%' THEN 'ARMAS DE ACOMPAÑAMIENTO'
+		  WHEN res_subtipo like '%MUNICION%' THEN 'MUNICIONES'
+            ELSE '---'
+       END as "armamento",
+	hop_lat,
+	hop_lon,
+	hr, 
+	HOP_RESUMEN_HECHOS,
+	HOP_HECHO
+	from resultados;
+
+
+
+
+create materialized view view_hechos_materializados
+as
+ 	select 
+	hecho,
+	fecha_hecho,
+	agr_div,
+	division, 
+	brigada,
+	unidad,
+	dpto,
+	mpio,
+	enemigo,
+	estrategia_afecta,
+	hop_accion_davaa,
+	hop_apoyo_blica,
+	hop_apoyo_conat,
+	hop_hecho_pos,
+	cantidad,
+	hop_operacion,
+	latitud,
+	longitud,
+	hr, 
+	RESUMEN_HECHOS
+	from hechos
+
+
+REFRESH MATERIALIZED VIEW view_resultados_materializados
+
+
+CREATE TABLE public."eventos"
+(
+    no integer NOT NULL,
+    boletin_interno text ,
+    fecha date,
+    hora text ,
+    division text ,
+    brigada text ,
+    batallon text ,
+    enemigo text,
+    departamento text,
+	municipio text,
+	sitio text,
+	tipo_evento text,
+	latitud text,
+	gr_n text,
+	m_n text,
+	s_n double precision,
+	longitud text,
+	gr_l text,
+	m_l text,
+	s_l double precision,
+	coordenadas_x double precision,
+	coordenadas_y double precision,
+	constante text,
+	situacion text,
+
+    PRIMARY KEY (no)
+);
+
+
+
+

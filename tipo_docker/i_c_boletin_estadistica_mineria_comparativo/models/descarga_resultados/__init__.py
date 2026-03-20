@@ -1,0 +1,1 @@
+from tipo_docker.i_c_boletin_estadistica_mineria_comparativo.models.funtions.pdf.boletin_coe import *
